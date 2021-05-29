@@ -14,13 +14,9 @@ getUsers(offset = 0, limit = 10) {
  },
 getAdmins() { 
     try {
-        const admins = await users.findAll({
+        const admins = User.findAll({
             where: { role: "admin" },
-            include: [
-                {
-                    model: Project
-                }
-            ]
+            
         });
         if (admins) {
             return res.status(200).json({ admins });
@@ -32,7 +28,7 @@ getAdmins() {
 },
 getAuthors() {
     try {
-        const authors = await users.findAll({
+        const authors = User.findAll({
             where: { role: "author" },
             include: [
                 {
@@ -50,7 +46,7 @@ getAuthors() {
  },
 getGuests(){ 
     try {
-        const guests = await users.findAll({
+        const guests = User.findAll({
             where: { role: "guest" },
             include: [
                 {
@@ -68,8 +64,8 @@ getGuests(){
 },
 getUser(id) { 
     try {
-        const { id } = req.params;
-        const user = await User.findOne({
+        console.log("huuuuu",id);
+        const user = User.findOne({
             where: { id: id },
             include: [
                 {
@@ -85,10 +81,29 @@ getUser(id) {
         return res.status(500).send(error.message);
     }
 },
+const :getUserById=async (req, res)=>{
+    try {
+        const { id } = req.params;
+        const user = await User.findOne({
+            where: { id : id },
+            include: [
+                {
+                    model: Project
+                }
+            ]
+        });
+        if (user) {
+            return res.status(200).json({ user });
+        }
+        return res.status(404).send('User with the specified ID does not exists');
+    } catch (error) {
+        return res.status(500).send(error.message);
+    }
+},
 getUserByEmail(email) {
     try {
         const { email } = req.params;
-        const user = await User.findOne({
+        const user = User.findOne({
             where: { email: email },
             include: [
                 {
@@ -113,11 +128,11 @@ addUser(user) {
 },
 updateUser(id) { 
     try {
-        const [updated] = await users.update(req.body, {
+        const [updated] =  User.update(req.body, {
             where: { id: id }
         });
         if (updated) {
-            const updatedUser = await users.findOne({ where: { id: id } });
+            const updatedUser = User.findOne({ where: { id: id } });
             return {users: updatedUser};
         }
         throw new Error('User not found');
@@ -128,7 +143,7 @@ updateUser(id) {
 deleteUser(req, res){
     try {
         const { id } = req.params;
-        const deleted = await User.destroy({
+        const deleted = User.destroy({
             where: { id: id }
         });
         if (deleted) {
