@@ -53,7 +53,6 @@ router.put('/users',async (req, res) => {
 });
 router.delete('/:id',async (req, res)=>
 {
-  console.log("here");
   const {id}=req.params;
   res.send(Users.deleteUser(id));
 });
