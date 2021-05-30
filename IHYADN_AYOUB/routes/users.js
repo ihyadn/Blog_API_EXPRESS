@@ -39,6 +39,17 @@ router.put('/users',async (req, res)=>
   const {id}=req.params;
   res.status(200).json(Users.updateUser(id));
 });
-router.delete('/users/:id',Users.deleteUser);
+router.delete('/delete:id',async (req, res)=>
+{
+  console.log("here");
+  const {id}=req.params;
+  res.send("here");
+});
+router.delete('/',async (req, res)=>
+{
+  console.log("here");
+  const {id}=req.params;
+  res.send("here");
+});
 
 module.exports = router;

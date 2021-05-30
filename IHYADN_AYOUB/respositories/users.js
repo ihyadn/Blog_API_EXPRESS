@@ -140,18 +140,18 @@ updateUser(id) {
         return res.status(500).send(error.message);
     }
 },
-deleteUser(req, res){
+deleteUser(id){
     try {
-        const { id } = req.params;
+        console.log("here");
         const deleted = User.destroy({
             where: { id: id }
         });
         if (deleted) {
-            return res.status(204).send("User deleted");
+            return "User deleted";
         }
         throw new Error("User not found");
     } catch (error) {
-        return res.status(500).send(error.message);
+        return error.message;
     }
 },
 }
