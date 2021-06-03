@@ -57,5 +57,10 @@ router.delete('/:id',async (req, res)=>
   res.send(Users.deleteUser(id));
 });
 
+router.get('/:id/articles',async (req, res)=>
+{
+  const {id}=req.params;
+  res.send(await Users.getArticlesById(id));
+});
 
 module.exports = router;

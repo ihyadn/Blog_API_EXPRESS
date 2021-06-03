@@ -1,9 +1,16 @@
-const { User } = require('../models');
+const { User,Article } = require('../models');
 module.exports = {
     getAllUsers() {
 return User.findAll()
 },
 // méthodes à implémenter
+getArticlesById(id)
+{
+    return Article.findAll({
+        
+        where:{UserId:id}
+    })
+},
 getUsers(offset = 0, limit = 10) {
     return User.findAll(
         {
