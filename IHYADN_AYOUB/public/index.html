@@ -19,15 +19,9 @@
     <div class="mr-auto"></div>
     <ul class="text-white navbar-nav">
   
+      
       <li class="nav-item">
-        <button type="button" class="btn btn-primary mr-5" data-toggle="modal" data-target="#exampleModal">
-          UPDATE USER
-        </button>
-      </li>
-      <li class="nav-item">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ADDUSER">
-          ADD USER
-        </button>
+        
       </li>
   
   
@@ -36,7 +30,9 @@
   </nav>
 
   <!-- Button trigger modal -->
-
+  <button type="button" class="btn btn-primary ml-5 mt-5" data-toggle="modal" data-target="#ADDUSER">
+    ADD USER
+  </button>
   <div id="users" class="m-5">
   </div>
   <!-- Modal -->
@@ -105,11 +101,13 @@
       .then(response => response.json())
       .then(response =>{
 
-        let table="<table class='table table-bordered table-striped'><tr ><th>ID</th><th>USERNAME</th><th>EMAIL</th><th>ROLE</th><th>PASSWORD</th><th>REMOVE</th></tr>";
+        let table="<table class='table table-bordered table-striped'><tr ><th>ID</th><th>USERNAME</th><th>EMAIL</th><th>ROLE</th><th>PASSWORD</th><th>REMOVE</th><th>UPDATE</th></th><th>ARTICLES</th></tr>";
         
         response.forEach(user => {
           table+="<tr><th>"+user["id"]+"</th><th>"+ user["username"] +"</th><th>"+user["email"] +"</th><th>"+user["role"] +"</th><th>"+user["password"] +"</th>";
           table+="<td><button class='btn btn-danger remove' id=" + user["id"] +"> Remove</button ></td>";
+          table+="<td><button id="+user["id"]+"type='button' class='btn btn-secondary mr-5' data-toggle='modal' data-target='#exampleModal'>update</button></td>";
+          table += "<td><a methode='POST' href='articles.html?id="+user["id"]+"  class='link-dark'>articles</a></td>";
           table+="</tr>";
         });
         table+="</table>";
@@ -123,7 +121,7 @@
   
       $(document).on("click", ".remove", function () {
           var id = $(this).attr("id");
-          return fetch('/'+id, {
+          return fetch('/users/'+id, {
             method: 'delete',
         }).then(response => console.log(response))
           
@@ -134,7 +132,6 @@
           var email = $("#email").val();
           var password = $("#password").val();
           var role = $("#role").val();
-          console.log(id);
           return fetch('/users', {
           method: 'PUT',
           dataType:'JSON',
@@ -151,7 +148,6 @@
             var email = $("#email_add").val();
             var password = $("#password_add").val();
             var role = $("#role_add").val();
-            console.log(id);
             return fetch('/users', {
               method: 'POST',
               dataType: 'JSON',

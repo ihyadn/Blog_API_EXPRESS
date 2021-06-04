@@ -15,7 +15,8 @@ module.exports = {
             {
                 model:Tag,
                 required:true,
-            }
+            },
+            
         ],
         where:{id:id},
         attributes:[]
