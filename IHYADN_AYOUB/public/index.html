@@ -95,7 +95,7 @@
 
       refresh_table();
       function refresh_table() {
-        console.log(localStorage.getItem('token'));
+        
       if (localStorage.getItem('token')=='undefined' || localStorage.getItem('token') == 'null' ) {
           console.log("here");
           window.location.href = "http://localhost:3000/login.html";
@@ -133,7 +133,7 @@
       });
       }
 
-      //setInterval(refresh_table, 1000);
+      setInterval(refresh_table, 1000);
 
     });
   

@@ -33,9 +33,9 @@ isAdmin = (req, res, next) => {
   console.log(req.body.UserId);
   user(req.body.UserId).then(user => {
         if (user.role =="admin") {
-          console.log("cerifid");
+         
           next();
-          console.log("nestdone");
+          
           return;
         }
         else

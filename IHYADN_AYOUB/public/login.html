@@ -82,10 +82,10 @@
                     window.localStorage.setItem('token', response.accessToken);
                     window.localStorage.setItem('id', response.id);
                     window.localStorage.setItem('role', response.role);
-                    console.log(localStorage.getItem('token'));
+                    
                     if (localStorage.getItem('token') != 'undefined' && localStorage.getItem('token') != 'null')
                     {
-                        console.log("here");
+                        
                     if (response.role==="admin")
                     {
                         window.location.href = "http://localhost:3000";
