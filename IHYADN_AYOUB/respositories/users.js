@@ -1,4 +1,5 @@
 const { User,Article } = require('../models');
+
 module.exports = {
     getAllUsers() {
 return User.findAll()
@@ -37,11 +38,7 @@ getAuthors() {
     try {
         const authors = User.findAll({
             where: { role: "author" },
-            include: [
-                {
-                    model: Project
-                }
-            ]
+            
         });
         if (admins) {
             return res.status(200).json({ authors });
@@ -55,11 +52,7 @@ getGuests(){
     try {
         const guests = User.findAll({
             where: { role: "guest" },
-            include: [
-                {
-                    model: Project
-                }
-            ]
+            
         });
         if (admins) {
             return res.status(200).json({ guests });
@@ -72,7 +65,7 @@ getGuests(){
 
 getUserByEmail(email) {
     try {
-        const { email } = req.params;
+        
         const user = User.findOne({
             where: { email: email },
             include: [

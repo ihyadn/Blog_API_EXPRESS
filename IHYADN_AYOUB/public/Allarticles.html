@@ -32,39 +32,38 @@
     </nav>
 
     <div id="articles" class="m-5">
-        
+
     </div>
     <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
         integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
-            integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
-            crossorigin="anonymous"></script>
+        integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+        crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
-            integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
-            crossorigin="anonymous"></script>
+        integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+        crossorigin="anonymous"></script>
 </body>
 <script>
     $(document).ready(function () {
 
         refresh_table();
         function refresh_table() {
-            var start=window.location.href.indexOf("?");
+            var start = window.location.href.indexOf("?");
             var end = window.location.href.indexOf("%");
-            var id = window.location.href.slice(start+4, window.location.href.length);
-        
-            fetch('users/'+id+'/articles')
+            var id = window.location.href.slice(start + 4, window.location.href.length);
+
+            fetch('http://localhost:3000/articles')
                 .then(response => response.json())
                 .then(response => {
-                    
-                    let table = "<table class='table table-bordered table-striped'><tr ><th>ID</th><th>TITLE</th><th>CONTENT</th><th>PUBLISHED</th><th>COMMENTS</th><th>TAGS</th><th>REMOVE</th></tr>";
+
+                    let table = "<table class='table table-bordered table-striped'><tr ><th>ID</th><th>TITLE</th><th>CONTENT</th><th>PUBLISHED</th><th>COMMENTS</th><th>TAGS</th></tr>";
 
                     response.forEach(article => {
-                        
+
                         table += "<tr><th>" + article["id"] + "</th><th>" + article["title"] + "</th><th>" + article["content"] + "</th><th>" + article["published"] + "</th>";
-                         table += "<td><a methode='POST' href='comments.html?id=" + article["id"] + "'  class='link-dark'>comments</a></td>";
+                        table += "<td><a methode='POST' href='comments.html?id=" + article["id"] + "'  class='link-dark'>comments</a></td>";
                         table += "<td><a methode='POST' href='tags.html?id=" + article["id"] + "'  class='link-dark'>tags</a></td>";
-                        table += "<td><button class='btn btn-danger remove' id=" + article["id"] + "> Remove</button ></td>";
                         table += "</tr>";
                     });
                     table += "</table>";
@@ -75,18 +74,13 @@
         setInterval(refresh_table, 1000);
 
     });
-    $(document).on("click", ".remove", function () {
-            var id = $(this).attr("id");
-            return fetch('/articles/' + id, {
-                method: 'delete',
-            }).then(response => console.log(response))
-        });
     $(document).on("click", ".logout", function () {
             localStorage.clear();
 
-            window.location.href = "http://localhost:3000/login.html";
+            window.location.href="http://localhost:3000/login.html";
         });
     
+
 </script>
 
 </html>

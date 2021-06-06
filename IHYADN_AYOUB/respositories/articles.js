@@ -2,6 +2,9 @@ const Sequelize=require('sequelize');
 const { Comment,Article,Tag } = require('../models');
 
 module.exports = {
+    getArticles(id) {
+    return Article.findAll()
+ },
     getArticleComments(id) {
     return Comment.findAll({
         
@@ -15,6 +18,10 @@ module.exports = {
             {
                 model:Tag,
                 required:true,
+                attributes:[
+                    "id",
+                    "name"
+                ]
             },
             
         ],
@@ -22,4 +29,18 @@ module.exports = {
         attributes:[]
     })
  },
+ deleteArticle(id){
+    try {
+        
+        const deleted = Article.destroy({
+            where: { id: id }
+        });
+        if (deleted) {
+            return "Article deleted";
+        }
+        throw new Error("Article not found");
+    } catch (error) {
+        return error.message;
+    }
+},
 }

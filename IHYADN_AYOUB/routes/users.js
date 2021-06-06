@@ -2,14 +2,20 @@ var express = require('express');
 var router = express.Router();
 var Users=require("../respositories/users.js");
 const { User } = require('../models');
+const { authJwt,verifySignUp  } = require("../middleware");
+const controller = require("../controllers/auth.controller");
 
 /* GET users listing. */
 router.get('/', async function(req, res, next) {
 res.send(await Users.getAllUsers())
 });
-router.get('/users',async (req, res) => {
+router.get('/users',[authJwt.verifyToken, authJwt.isAdmin],async (req, res) => {
   const {offset,limit}=req.params;
-  res.send(await Users.getUsers(offset,limit))
+  return res.send(await Users.getUsers(offset,limit))
+});
+router.post('/users',[authJwt.verifyToken, authJwt.isAdmin],async (req, res) => {
+  const {offset,limit}=req.params;
+  return res.send(await Users.getUsers(offset,limit))
 });
 router.get('/:id',async (req, res)=>{
     try {
@@ -62,5 +68,15 @@ router.get('/:id/articles',async (req, res)=>
   const {id}=req.params;
   res.send(await Users.getArticlesById(id))
 });
+router.post(
+    "/signup",
+    [
+      verifySignUp.checkDuplicateUsernameOrEmail,
+    ],
+
+    controller.signup
+  );
+
+router.post("/signin", controller.signin);
 
 module.exports = router;

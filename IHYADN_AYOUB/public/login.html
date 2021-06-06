@@ -1,0 +1,107 @@
+<html>
+
+<head>
+    <title>Express</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+</head>
+<style>
+    html,
+    body {
+        padding: 0;
+        margin: 0;
+    }
+</style>
+
+<body>
+    <html>
+
+<head>
+  <title>Express</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+    integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+</head>
+<style>
+  html,body{
+    padding:0;
+    margin:0;
+  }
+</style>
+<body>
+    <main class="container my-5">
+        <div class="row">
+            <section class="col-md-6 my-5 offset-md-3">
+    
+                <div class="card shadow p-5 bg-primary">
+                    
+    
+                        <h3 class="text-center text-uppercase mb-4">Login</h3>
+                        <hr>
+    
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" placeholder="Email" class="form-control" id="email">
+                        </div>
+    
+                        <label for="Password">Password</label>
+                        <div class="input-group mb-3">
+                            <input type="password" name="password" id="password" class="form-control"
+                                placeholder="Enter Password" aria-label="Enter Password" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon2"><i class="fa fa-eye"
+                                        aria-hidden="true"></i>
+                                </span>
+                            </div>
+                        </div>
+    
+                        <button class="btn btn-block btn-secondary rounded-pill mt-3 submit">Login</button>
+    
+                    
+                        </p>
+    
+                   
+                </div>
+            </section>
+        </div>
+    </main>
+    <script>
+        $(document).on("click", ".submit", function () {
+                var email = $("#email").val();
+                var password = $("#password").val();
+                
+                return fetch('/users/signin', {
+                    method: 'post',
+                    headers: { 'Content-Type': 'application/json' },
+                    body:JSON.stringify({"email":email,"password":password})
+                }).then(response => response.json())
+                .then(response => {
+                    window.localStorage.setItem('token', response.accessToken);
+                    window.localStorage.setItem('id', response.id);
+                    window.localStorage.setItem('role', response.role);
+                    console.log(localStorage.getItem('token'));
+                    if (localStorage.getItem('token') != 'undefined' && localStorage.getItem('token') != 'null')
+                    {
+                        console.log("here");
+                    if (response.role==="admin")
+                    {
+                        window.location.href = "http://localhost:3000";
+                    }
+                    else if(response.role === "author")
+                    {
+                        window.location.href = "http://localhost:3000/articles.html?id="+localStorage.getItem('id');
+                    }
+                    else if (response.role==="guest")
+                    {
+                        window.location.href = "http://localhost:3000/Allarticles.html";
+                    }
+                }
+            });
+        });
+            
+    </script>
+</body>
+</html>

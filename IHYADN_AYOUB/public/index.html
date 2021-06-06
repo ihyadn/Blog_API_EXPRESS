@@ -21,10 +21,8 @@
   
       
       <li class="nav-item">
-        
+        <button class="logout btn btn-danger">LogOut</button>
       </li>
-  
-  
     </ul>
   
   </nav>
@@ -47,7 +45,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <input type="text" name="id" class="form-control" id="id" placeholder="id"><br/>
+          <input type="text" name="id" class="form-control" id="id" placeholder="id" value="0"><br/>
           <input type="text" name="username" class="form-control" id="username" placeholder="username"><br />
           <input type="email" name="email" class="form-control" id="email" placeholder="Email"><br />
           <input type="password" name="passwod" class="form-control" id="password" placeholder="password"><br />
@@ -92,22 +90,42 @@
   integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 </body>
 <script>
-  console.log("hii");
+  console.log("");
   $(document).ready(function () {
 
       refresh_table();
       function refresh_table() {
-      fetch('http://localhost:3000/users/users')
+        console.log(localStorage.getItem('token'));
+      if (localStorage.getItem('token')=='undefined' || localStorage.getItem('token') == 'null' ) {
+          console.log("here");
+          window.location.href = "http://localhost:3000/login.html";
+        }
+      if (localStorage.getItem('role')==="author")
+      {
+        window.location.href = "http://localhost:3000/articles.html?id=" + localStorage.getItem('id');
+      }
+      if (localStorage.getItem('role') === "guest") {
+          window.location.href = "http://localhost:3000/Allarticles.html";
+        }
+      fetch('http://localhost:3000/users/users',{
+        method:"POST",
+        headers: {
+          'x-access-token':localStorage.token,
+          'Content-Type': 'application/json'
+        },
+     
+        body: JSON.stringify({ "UserId":localStorage.id})
+      })
       .then(response => response.json())
       .then(response =>{
-
+        
         let table="<table class='table table-bordered table-striped'><tr ><th>ID</th><th>USERNAME</th><th>EMAIL</th><th>ROLE</th><th>PASSWORD</th><th>REMOVE</th><th>UPDATE</th></th><th>ARTICLES</th></tr>";
         
         response.forEach(user => {
           table+="<tr><th>"+user["id"]+"</th><th>"+ user["username"] +"</th><th>"+user["email"] +"</th><th>"+user["role"] +"</th><th>"+user["password"] +"</th>";
           table+="<td><button class='btn btn-danger remove' id=" + user["id"] +"> Remove</button ></td>";
-          table+="<td><button id="+user["id"]+"type='button' class='btn btn-secondary mr-5' data-toggle='modal' data-target='#exampleModal'>update</button></td>";
-          table += "<td><a methode='POST' href='articles.html?id="+user["id"]+"  class='link-dark'>articles</a></td>";
+          table+="<td><button id="+user["id"]+" type='button' class='btn btn-secondary update' data-toggle='modal' data-target='#exampleModal' >update</button></td>";
+          table += "<td><a methode='POST' href='articles.html?id="+user["id"]+"'  class='link-dark'>articles</a></td>";
           table+="</tr>";
         });
         table+="</table>";
@@ -115,7 +133,7 @@
       });
       }
 
-      setInterval(refresh_table, 1000);
+      //setInterval(refresh_table, 1000);
 
     });
   
@@ -125,6 +143,10 @@
             method: 'delete',
         }).then(response => console.log(response))
           
+      });
+      $(document).on("click", ".update", function () {
+        document.getElementById("id").value=$(this).attr("id");
+        console.log($this.attr("id"));
       });
        $(document).on("click", ".save", function () {
           var id = $("#id").val();
@@ -158,5 +180,10 @@
             }).then(response => console.log(response))
 
           });
+          $(document).on("click", ".logout", function () {
+              localStorage.clear();
+
+              window.location.href = "http://localhost:3000/login.html";
+            });
 </script>
 </html>
