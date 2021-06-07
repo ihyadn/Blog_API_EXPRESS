@@ -1,0 +1,19 @@
+login as admin:
+
+"email":abcd@gmail.com
+"password":123123123
+
+login as author:
+
+email:Arielle.Mann@yahoo.com
+password":S6XAqvjL
+
+login as guest:
+
+email":Vanessa_Bins@yahoo.com
+password:i96eNqfo
+
+
+
+link for github repositorie
+https://github.com/ihyadn/Blog_API_EXPRESS/tree/master
