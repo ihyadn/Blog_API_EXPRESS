@@ -92,11 +92,11 @@
 <script>
   console.log("");
   $(document).ready(function () {
-
+var a;
       refresh_table();
       function refresh_table() {
         
-      if (localStorage.getItem('token')=='undefined' || localStorage.getItem('token') == 'null' ) {
+      if (!localStorage.getItem('token')) {
           console.log("here");
           window.location.href = "http://localhost:3000/login.html";
         }
@@ -107,7 +107,7 @@
       if (localStorage.getItem('role') === "guest") {
           window.location.href = "http://localhost:3000/Allarticles.html";
         }
-      fetch('http://localhost:3000/users/users',{
+      fetch('http://localhost:3000/users/admin',{
         method:"POST",
         headers: {
           'x-access-token':localStorage.token,
@@ -154,7 +154,7 @@
           var email = $("#email").val();
           var password = $("#password").val();
           var role = $("#role").val();
-          return fetch('/users', {
+          return fetch('/users/users', {
           method: 'PUT',
           dataType:'JSON',
           body: JSON.stringify({ id: id,username:username,email:email,password:password,role:role}),
@@ -170,7 +170,7 @@
             var email = $("#email_add").val();
             var password = $("#password_add").val();
             var role = $("#role_add").val();
-            return fetch('/users', {
+            return fetch('http://localhost:3000/users/users', {
               method: 'POST',
               dataType: 'JSON',
               body: JSON.stringify({ id: id, username: username, email: email, password: password, role: role }),

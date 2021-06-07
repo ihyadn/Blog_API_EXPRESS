@@ -13,7 +13,7 @@ router.get('/users',[authJwt.verifyToken, authJwt.isAdmin],async (req, res) => {
   const {offset,limit}=req.params;
   return res.send(await Users.getUsers(offset,limit))
 });
-router.post('/users',[authJwt.verifyToken, authJwt.isAdmin],async (req, res) => {
+router.post('/admin',[authJwt.verifyToken, authJwt.isAdmin],async (req, res) => {
   const {offset,limit}=req.params;
   return res.send(await Users.getUsers(offset,limit))
 });

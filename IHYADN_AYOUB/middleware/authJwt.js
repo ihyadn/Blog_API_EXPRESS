@@ -4,13 +4,14 @@ const {User} = require("../models");
 
 verifyToken = (req, res, next) => {
   let token = req.headers["x-access-token"];
-
+  console.log(token);
   if (!token) {
     return res.status(403).send({
       message: "No token provided!"
     });
   }
-
+  else
+  {
   jwt.verify(token, config.secret, (err, decoded) => {
     if (err) {
       console.log(err);
@@ -21,6 +22,7 @@ verifyToken = (req, res, next) => {
     req.userId = decoded.id;
     next();
   });
+}
 };
 
 isAdmin = (req, res, next) => {
