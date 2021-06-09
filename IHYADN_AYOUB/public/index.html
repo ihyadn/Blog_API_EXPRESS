@@ -95,7 +95,9 @@
 var a;
       refresh_table();
       function refresh_table() {
-        
+      if (typeof(localStorage.getItem('token'))=="undefined") {
+          window.location.href = "http://localhost:3000/login.html";
+        }
       if (!localStorage.getItem('token')) {
           console.log("here");
           window.location.href = "http://localhost:3000/login.html";
